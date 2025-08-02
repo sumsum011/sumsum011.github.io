@@ -4,22 +4,6 @@
   <meta charset="UTF-8" />
   <title>Live Podia Oyun Sitesi</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; background: #222; color: white; }
-    a { color: #0af; text-decoration: none; font-size: 20px; }
-    a:hover { text-decoration: underline; }
-  </style>
-</head>
-<body>
-  <h1>Live Podia Oyun Sitesi</h1>
-  <p>Burada basit oyunlar olacak.</p>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8" />
-  <title>Live Podia Oyun Sitesi</title>
-  <style>
     body {
       background: linear-gradient(135deg, #667eea, #764ba2);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -71,3 +55,4 @@
   <footer>© 2025 Live Podia - Tüm Hakları Saklıdır</footer>
 </body>
 </html>
+
