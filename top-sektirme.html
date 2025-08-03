@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Top Sektirme Oyunu</title>
+  <style>
+    body {
+      margin: 0;
+      background: #222;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      user-select: none;
+    }
+    canvas {
+      background: #111;
+      border: 2px solid #eee;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="game" width="400" height="600"></canvas>
+
+<script>
+  const canvas = document.getElementById('game');
+  const ctx = canvas.getContext('2d');
+
+  const WIDTH = canvas.width;
+  const HEIGHT = canvas.height;
+
+  // Top özellikleri
+  const ball = {
+    x: WIDTH / 2,
+    y: HEIGHT / 2,
+    radius: 15,
+    dx: 3,
+    dy: -4,
+    color: '#00ffea',
+  };
+
+  // Platform özellikleri
+  const paddle = {
+    width: 100,
+    height: 15,
+    x: WIDTH / 2 - 50,
+    y: HEIGHT - 40,
+    color: '#ff6f61',
+    speed: 0,
+  };
+
+  let isGameOver = false;
+  let score = 0;
+
+  function drawBall() {
+    ctx.beginPath();
+    ctx.fillStyle = ball.color;
+    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.closePath();
+  }
+
+  function drawPaddle() {
+    ctx.fillStyle = paddle.color;
+    ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
+  }
+
+  function drawScore() {
+    ctx.fillStyle = '#eee';
+    ctx.font = '20px Arial';
+    ctx.fillText('Skor: ' + score, 10, 30);
+  }
+
+  function update() {
+    if (isGameOver) {
+      ctx.fillStyle = '#eee';
+      ctx.font = '40px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('Oyun Bitti!', WIDTH/2, HEIGHT/2 - 20);
+      ctx.font = '25px Arial';
+      ctx.fillText('Skorunuz: ' + score, WIDTH/2, HEIGHT/2 + 20);
+      ctx.fillText('Sayfayı yenileyin tekrar oynamak için', WIDTH/2, HEIGHT/2 + 60);
+      return;
+    }
+
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
+    drawBall();
+    drawPaddle();
+    drawScore();
+
+    // Top hareketi
+    ball.x += ball.dx;
+    ball.y += ball.dy;
+
+    // Duvarlara çarpma kontrolü
+    if (ball.x + ball.radius > WIDTH || ball.x - ball.radius < 0) {
+      ball.dx = -ball.dx;
+    }
+    if (ball.y - ball.radius < 0) {
+      ball.dy = -ball.dy;
+    }
+
+    // Platforma çarpma kontrolü
+    if (
+      ball.y + ball.radius > paddle.y &&
+      ball.x > paddle.x &&
+      ball.x < paddle.x + paddle.width
+    ) {
+      ball.dy = -ball.dy;
+      score++;
+    }
+
+    // Oyunu kaybetme
+    if (ball.y - ball.radius > HEIGHT) {
+      isGameOver = true;
+    }
+
+    // Platform sınırları
+    if (paddle.x < 0) paddle.x = 0;
+    if (paddle.x + paddle.width > WIDTH) paddle.x = WIDTH - paddle.width;
+
+    requestAnimationFrame(update);
+  }
+
+  // Fare ile platformu kontrol et
+  window.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    let mouseX = e.clientX - rect.left;
+    paddle.x = mouseX - paddle.width / 2;
+  });
+
+  update();
+</script>
+
+</body>
+</html>
